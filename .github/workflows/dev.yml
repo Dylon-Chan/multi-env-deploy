@@ -96,7 +96,7 @@ jobs:
         env:
           image_tag: latest
         run: |
-          docker build -t $ecr_url:$image_tag .
+          docker build -t ${{ steps.terraform-ecr.outputs.ecr_url }}:$image_tag .
           docker push ${{ steps.terraform-ecr.outputs.ecr_url }}:$image_tag
       - name: Create AWS ECS cluster, task definition and service using Terraform
         working-directory: ./environments/${{ env.environment }}
