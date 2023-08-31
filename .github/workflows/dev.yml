@@ -84,6 +84,7 @@ jobs:
         with:
           mask-password: true
       - name: Create ECR repository using Terraform
+        working-directory: ./modules/ecr
         run: |
           cd modules/ecr
           terraform init
