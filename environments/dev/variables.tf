@@ -52,17 +52,11 @@ variable "ecs_name" {
 variable "cpu" {
   description = "CPU"
   type = number
-  default = 512
+  default = 256
 }
 
 variable "memory" {
   description = "Memory"
   type = number
-  default = 1024
-}
-
-variable "some_condition_that_determines_readiness" {
-  description = "A description explaining the purpose of this variable"
-  type        = bool
-  default     = false
+  default = 512
 }

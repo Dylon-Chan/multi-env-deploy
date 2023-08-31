@@ -19,7 +19,7 @@ variable "ecs_sg_name" {
 variable "port" {
     description = "Port"
     type = number
-    default = 8000
+    default = 3030
 }
 
 variable "vpc_id" {
@@ -37,10 +37,16 @@ variable "image_name" {
   type = string
 }
 
+variable "image_tag" {
+  description = "Image Tag"
+  type = string
+  default = "latest"
+}
+
 variable "ecs_name" {
   description = "ECS Name"
   type = string
-  default = "ws-app-dev"
+  default = "ws-app-stage"
 }
 
 variable "cpu" {
@@ -53,10 +59,4 @@ variable "memory" {
   description = "Memory"
   type = number
   default = 1024
-}
-
-variable "some_condition_that_determines_readiness" {
-  description = "A description explaining the purpose of this variable"
-  type        = bool
-  default     = false
 }
