@@ -84,6 +84,7 @@ jobs:
         with:
           mask-password: true
       - name: Create ECR repository using Terraform
+        id: terraform-ecr
         working-directory: ./modules/ecr
         run: |
           terraform init
@@ -94,13 +95,11 @@ jobs:
       - name: Push image to Amazon ECR
         id: push-image
         env:
-          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          ECR_REPOSITORY: ${{ env.docker_image_name }}
-          IMAGE_TAG: latest
+          ecr_url: ${{ steps.terraform-ecr.outputs.ecr_url }}
+          image_tag: latest
         run: |
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-          echo "ecr_image_name=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT 
+          docker build -t $ecr_url:$image_tag .
+          docker push $ecr_url:$image_tag
       - name: Create AWS ECS cluster, task definition and service using Terraform
         working-directory: ./environments/${{ env.environment }}
         env:

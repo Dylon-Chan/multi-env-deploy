@@ -32,11 +32,6 @@ variable "subnets" {
   default = ["subnet-0a66f860edb68d17a", "subnet-0cb72c22794da5e18"]  
 }
 
-variable "image_name" {
-  description = "ECR Repository Name"
-  type = string
-}
-
 variable "ecs_name" {
   description = "ECS Name"
   type = string
