@@ -37,6 +37,12 @@ variable "image_name" {
   type = string
 }
 
+variable "image_tag" {
+  description = "ECR Repository Tag"
+  type = string
+  default = "latest"
+}
+
 variable "ecs_name" {
   description = "ECS Name"
   type = string
