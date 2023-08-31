@@ -78,14 +78,23 @@ jobs:
           docker tag ${{ env.DOCKER_IMAGE_NAME }}:latest ${{ env.DOCKER_IMAGE_NAME }}:latest
 
     
-  push-image-to-ecr:
+  build-and-push-image-to-ecr:
     runs-on: ubuntu-latest
     # Make sure to run after the "get-aws-info" job.
-    needs: [ get-aws-info, build-image]
-    name: Push Docker Image to ECR
+    needs: [ unit-testing, sca-tool-scan, get-aws-info]
+    name: Build and Push Docker Image to ECR
+    env:
+      DOCKER_IMAGE_NAME: ws-app
     steps:
       - name: Checkout repo code
-        uses: actions/checkout@v3      
+        uses: actions/checkout@v3
+      - name: Build Docker Image
+        id: build-image
+        run: |
+          docker build -t ${{ env.DOCKER_IMAGE_NAME }} .
+      - name: Tag Docker Image
+        run: |
+          docker tag ${{ env.DOCKER_IMAGE_NAME }}:latest ${{ env.DOCKER_IMAGE_NAME }}:latest  
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
@@ -109,7 +118,7 @@ jobs:
       - name: Push image to Amazon ECR
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          ECR_REPOSITORY: ${{ needs.get-aws-info.outputs.image_name }}
+          ECR_REPOSITORY: ${{ env.DOCKER_IMAGE_NAME }}
           IMAGE_TAG: latest
         run: |
           echo $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
@@ -117,7 +126,7 @@ jobs:
 
   deploy:
     runs-on: ubuntu-latest
-    needs: push-image-to-ecr
+    needs: build-and-push-image-to-ecr
     name: Deploy to AWS
     steps:
       - name: Checkout repo code
