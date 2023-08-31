@@ -65,7 +65,7 @@ jobs:
     needs: [ unit-testing, sca-tool-scan]
     name: Build Docker Image
     env:
-      DOCKER_IMAGE_NAME: ws-app
+      DOCKER_IMAGE_NAME: ${{ needs.get-aws-info.outputs.image_name }}
     steps:
       - name: Checkout repo code
         uses: actions/checkout@v3
@@ -74,8 +74,6 @@ jobs:
         run: |
           docker build -t ${{ env.DOCKER_IMAGE_NAME }} .
           docker tag ${{ env.DOCKER_IMAGE_NAME }}:latest ${{ env.DOCKER_IMAGE_NAME }}:latest
-          docker_image_name=${{ env.DOCKER_IMAGE_NAME }}
-          echo "docker_image_name=$docker_image_name" >> "$GITHUB_OUTPUT"
 
     
   push-image-to-ecr:
@@ -109,7 +107,7 @@ jobs:
       - name: Push image to Amazon ECR
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          ECR_REPOSITORY: ${{ needs.build-image.outputs.docker_image_name }}
+          ECR_REPOSITORY: ${{ needs.get-aws-info.outputs.image_name }}
           IMAGE_TAG: latest
         run: |
           echo $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
