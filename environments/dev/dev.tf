@@ -1,7 +1,3 @@
-module "ecr" {
-  source = "../../modules/ecr"
-}
-
 resource "aws_security_group" "ecs_sg" {
   vpc_id = var.vpc_id
   name = var.ecs_sg_name
@@ -35,7 +31,7 @@ resource "aws_ecs_task_definition" "task" {
   execution_role_arn = var.role_to_assume
   container_definitions = jsonencode([{
     name: "${var.ecs_name}-td",
-    image: "${module.ecr.repository_url}:latest",
+    image: "${var.image_name}:latest",
     portMappings: [
         {
             containerPort: var.port,
