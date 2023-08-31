@@ -101,7 +101,7 @@ jobs:
 
   deploy:
     runs-on: ubuntu-latest
-    needs: build-and-push-image-to-ecr
+    needs: [ build-and-push-image-to-ecr, get-aws-info]
     name: Deploy to AWS
     steps:
       - name: Checkout repo code
