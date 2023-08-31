@@ -86,10 +86,10 @@ jobs:
       - name: Create ECR repository using Terraform
         working-directory: ./modules/ecr
         run: |
-          cd modules/ecr
           terraform init
           terraform plan
           terraform apply -auto-approve
+          echo "ecr_url=$(terraform output -json | jq -r .repository_url.value)" >> $GITHUB_OUTPUT
       - name: Push image to Amazon ECR
         id: push-image
         env:
