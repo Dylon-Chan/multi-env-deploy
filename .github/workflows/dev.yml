@@ -62,7 +62,7 @@ jobs:
   # Below is tentatively, will be replaced by above job.
   build-image:
     runs-on: ubuntu-latest
-    needs: [ unit-testing, sca-tool-scan]
+    needs: [ unit-testing, sca-tool-scan, get-aws-info]
     name: Build Docker Image
     env:
       DOCKER_IMAGE_NAME: ${{ needs.get-aws-info.outputs.image_name }}
