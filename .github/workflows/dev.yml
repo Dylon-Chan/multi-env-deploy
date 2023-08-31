@@ -103,6 +103,8 @@ jobs:
     runs-on: ubuntu-latest
     needs: [ build-and-push-image-to-ecr, get-aws-info]
     name: Deploy to AWS
+    env:
+      docker_image_name: ws-app
     steps:
       - name: Checkout repo code
         uses: actions/checkout@v3
@@ -130,20 +132,20 @@ jobs:
         id: push-image
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          ECR_REPOSITORY: ${{ env.image_name }}
+          ECR_REPOSITORY: ${{ env.docker_image_name }}
           IMAGE_TAG: latest
         run: |
-          echo "ecr_image_name=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT 
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          echo "ecr_image_name=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT 
       - name: Create AWS ECS cluster, task definition and service using Terraform
         env:
           environment: ${{ needs.get-aws-info.outputs.environment }}
-          image_name: ${{ steps.push-image.outputs.ecr_image_name }}
+          ecr_image_name: ${{ steps.push-image.outputs.ecr_image_name }}
         run: |
           cd environments/$environment
           terraform init
-          terraform plan -var "image_name=$image_name"
+          terraform plan -var "image_name=$ecr_image_name"
           terraform apply -auto-approve -var "image_name=$image_name" -target="aws_ecs_cluster.cluster" -target="aws_ecs_task_definition.task" -target="aws_security_group.ecs_sg" -target="aws_ecs_service.service"
       - name: Set up Terraform outputs # to get the access url on Github Actions
         id: tf-outputs
