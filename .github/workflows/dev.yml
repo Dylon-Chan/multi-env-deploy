@@ -73,6 +73,8 @@ jobs:
         id: build-image
         run: |
           docker build -t ${{ env.DOCKER_IMAGE_NAME }} .
+      - name: Tag Docker Image
+        run: |
           docker tag ${{ env.DOCKER_IMAGE_NAME }}:latest ${{ env.DOCKER_IMAGE_NAME }}:latest
 
     
