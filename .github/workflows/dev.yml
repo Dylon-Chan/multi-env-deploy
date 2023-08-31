@@ -89,6 +89,7 @@ jobs:
           terraform init
           terraform plan
           terraform apply -auto-approve
+          echo "ecr_url=$(terraform output -json | jq -r .repository_url.value)"
           echo "ecr_url=$(terraform output -json | jq -r .repository_url.value)" >> $GITHUB_OUTPUT
       - name: Push image to Amazon ECR
         id: push-image
