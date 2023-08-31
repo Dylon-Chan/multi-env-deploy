@@ -59,6 +59,7 @@ jobs:
             echo "role_to_assume=$role_to_assume" >> $GITHUB_OUTPUT
             echo "aws_region=$aws_region" >> $GITHUB_OUTPUT
             echo "environment=$environment" >> $GITHUB_OUTPUT
+            echo "image_name=$image_name" >> $GITHUB_OUTPUT
         
         # Specify that this script should be executed using Bash.
         shell: bash
