@@ -102,18 +102,14 @@ jobs:
           docker push $ecr_url:$image_tag
       - name: Create AWS ECS cluster, task definition and service using Terraform
         working-directory: ./environments/${{ env.environment }}
-        env:
-          ecr_image_name: ${{ steps.push-image.outputs.ecr_image_name }}
         run: |
           terraform init
-          terraform apply -auto-approve -var "image_name=$ecr_image_name" -target="aws_ecs_cluster.cluster" -target="aws_ecs_task_definition.task" -target="aws_security_group.ecs_sg" -target="aws_ecs_service.service"
+          terraform apply -auto-approve -target="aws_ecs_cluster.cluster" -target="aws_ecs_task_definition.task" -target="aws_security_group.ecs_sg" -target="aws_ecs_service.service"
       - name: Set up Terraform outputs # to get the access url on Github Actions
         id: tf-outputs
         working-directory: ./environments/${{ env.environment }}
-        env:
-          ecr_image_name: ${{ steps.push-image.outputs.ecr_image_name }}
         run: |
-          terraform apply -auto-approve -var "image_name=$ecr_image_name"
+          terraform apply -auto-approve
           echo "access_url=$(terraform output -json all_access_urls | jq -r 'to_entries[0].value')" >> $GITHUB_ENV
       - name: Echo Access URL
         run: echo "The Access URL is $access_url"
