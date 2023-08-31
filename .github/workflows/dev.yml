@@ -75,7 +75,7 @@ jobs:
           docker build -t ${{ env.DOCKER_IMAGE_NAME }} .
           docker tag ${{ env.DOCKER_IMAGE_NAME }}:latest ${{ env.DOCKER_IMAGE_NAME }}:latest
           docker_image_name=${{ env.DOCKER_IMAGE_NAME }}
-          echo "docker_image_name=${{ env.DOCKER_IMAGE_NAME }}" >> "$GITHUB_OUTPUT"
+          echo "docker_image_name=$docker_image_name" >> "$GITHUB_OUTPUT"
 
     
   push-image-to-ecr:
