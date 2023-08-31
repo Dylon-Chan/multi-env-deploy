@@ -111,6 +111,7 @@ jobs:
           ECR_REPOSITORY: ${{ needs.build-image.outputs.docker_image_name }}
           IMAGE_TAG: latest
         run: |
+          echo $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
   deploy:
