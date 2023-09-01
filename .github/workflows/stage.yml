@@ -24,6 +24,7 @@ jobs:
     steps:
       - run: echo "The jobs are triggered by a ${{ github.event_name }} event on ${{ github.event.pull_request.head.ref }} branch."
 
+  # test for input value
   show-access-url:
     runs-on: ubuntu-latest
     needs: pre-deploy
@@ -32,7 +33,7 @@ jobs:
         run: |
           echo "access_url=${{ github.event.inputs.access_url }}"
   
-# Add DAST scan
+# Add ZAP scan using input access url
 
       
 
