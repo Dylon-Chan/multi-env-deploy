@@ -115,12 +115,6 @@ jobs:
       - name: Save Github Action output to a file
         run: |
           echo "${{ steps.tf-outputs.outputs.access_url }}" > access_url.txt
-
-  upload-output:
-    needs: [ deploy ]
-    runs-on: ubuntu-latest
-    name: Upload Output
-    steps:
       - name: Upload Access URL
         uses: actions/upload-artifact@v3
         with:
