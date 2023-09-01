@@ -32,16 +32,17 @@ jobs:
         id: access_url
         run: |
           echo "access_url=${{ github.event.inputs.access_url }}"
-          echo "access_url=${{ github.event.inputs.access_url }}" >> $GITHUB_OUTPUT
+          echo "${{ github.event.inputs.access_url }}" >> $GITHUB_OUTPUT
 
   test-access-url:
     runs-on: ubuntu-latest
     needs: show-access-url
     steps:
       - name: Show the access URL
-        id: dev-output
         run: |
+          access_url=${{ needs.show-access-url.outputs.access_url }}
           echo "access_url=${{ needs.show-access-url.outputs.access_url }}"
+          echo "access_url=$access_url"
   
 # Add DAST scan
 
