@@ -32,7 +32,8 @@ jobs:
         id: access_url
         run: |
           echo "access_url=${{ github.event.inputs.access_url }}"
-          echo "${{ github.event.inputs.access_url }}" >> $GITHUB_OUTPUT
+          access_url=${{ github.event.inputs.access_url }}
+          echo "$access_url" >> $GITHUB_OUTPUT
 
   test-access-url:
     runs-on: ubuntu-latest
