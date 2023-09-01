@@ -8,7 +8,6 @@ resource "aws_security_group" "ecs_sg" {
     to_port = var.image_port
     protocol = "tcp"
     security_groups = [aws_security_group.loadbalancer_sg.id]
-    cidr_blocks      = ["0.0.0.0/0"]
   }
   
   egress {

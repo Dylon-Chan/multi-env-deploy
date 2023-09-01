@@ -1,13 +1,13 @@
 resource "aws_security_group" "ecs_sg" {
   vpc_id = var.vpc_id
   name = var.ecs_sg_name
+  depends_on = [ aws_security_group.loadbalancer_sg ]
   
   ingress {
     from_port = var.image_port
     to_port = var.image_port
     protocol = "tcp"
     security_groups = [aws_security_group.loadbalancer_sg.id]
-    cidr_blocks      = ["0.0.0.0/0"]
   }
   
   egress {
