@@ -1,7 +1,7 @@
 variable "env" {
   description = "Environment"
   type = string
-  default = "dev"
+  default = "prod"
 }
 
 variable "role_to_assume" {
@@ -13,7 +13,7 @@ variable "role_to_assume" {
 variable "ecs_sg_name" {
   description = "ECS Security Group Name"
   type = string
-  default = "ws-app-ecs-sg"
+  default = "ws-app-ecs-sg-prod"
 }
 
 variable "image_port" {
@@ -22,9 +22,15 @@ variable "image_port" {
     default = 3000
 }
 
+variable "alb_port" {
+    description = "Port"
+    type = number
+    default = 8080
+}
+
 variable "vpc_id" {
   type = string
-  default = "vpc-038783054495c1d2f"
+  default = "vpc-038783054495c1d2f" # change!
 }
 
 variable "subnets" {
@@ -35,10 +41,11 @@ variable "subnets" {
 variable "image_name" {
   description = "ECR Repository Name"
   type = string
+  default = "255945442255.dkr.ecr.ap-southeast-1.amazonaws.com/ws-app"
 }
 
 variable "image_tag" {
-  description = "ECR Repository Tag"
+  description = "Image Tag"
   type = string
   default = "latest"
 }
@@ -46,17 +53,23 @@ variable "image_tag" {
 variable "ecs_name" {
   description = "ECS Name"
   type = string
-  default = "ws-app-dev"
+  default = "ws-app-prod"
 }
 
 variable "cpu" {
   description = "CPU"
   type = number
-  default = 256
+  default = 1024
 }
 
 variable "memory" {
   description = "Memory"
   type = number
-  default = 512
+  default = 2048
+}
+
+variable "lb_sg_name" {
+  description = "ECS Security Group Name"
+  type = string
+  default = "ws-app-lb-sg-prod"
 }

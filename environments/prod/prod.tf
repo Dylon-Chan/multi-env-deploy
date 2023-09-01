@@ -1,7 +1,6 @@
 resource "aws_security_group" "ecs_sg" {
   vpc_id = var.vpc_id
   name = var.ecs_sg_name
-  depends_on = [ aws_security_group.loadbalancer_sg ]
   
   ingress {
     from_port = var.image_port
@@ -89,7 +88,7 @@ resource "aws_security_group" "loadbalancer_sg" {
 
 resource "aws_lb_target_group" "load_balancer_tg" {
   name     = "ws-lb-tg-${var.env}"
-  port     = var.image_port
+  port     = var.alb_port
   protocol = "HTTP"
   vpc_id   = var.vpc_id
   target_type = "ip"

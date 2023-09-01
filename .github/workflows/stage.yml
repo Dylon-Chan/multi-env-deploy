@@ -5,7 +5,9 @@ run-name: ${{ github.actor }} is running CICD for Group 2 Chat Application
 on:
   pull_request:
     branches: [ stage ]
+  workflow_dispatch:
 
+  
 # Define permissions for this workflow, which can be added at either the job or workflow level.      
 permissions:
   id-token: write # This is required for requesting the JWT
@@ -18,4 +20,30 @@ jobs:
   pre-deploy:
     runs-on: ubuntu-latest
     steps:
-      - run: echo "The job is automatically triggered by a ${{ github.event_name }} event."
+      - run: echo "The jobs are triggered by a ${{ github.event_name }} event on ${{ github.event.pull_request.head.ref }} branch."
+
+  download-output:
+    runs-on: ubuntu-latest
+    needs: pre-deploy
+    steps:
+      - name: Download the artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: access_url_artifact
+      - name: Read and use the output
+        id: dev-output
+        run: |
+          access_url=$(cat access_url.txt)
+          echo "access_url=$(cat access_url.txt)"
+          echo "access_url=$access_url"
+          echo "access_url=$(cat access_url.txt)" >> $GITHUT_OUTPUT
+
+# Add DAST scan
+
+      
+
+
+
+  # Define the "get-aws-info" job, which uses a reusable workflow defined in another file. 
+  get-aws-info:
+    uses: ./.github/workflows/get-aws-info.yml
