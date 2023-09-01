@@ -17,15 +17,15 @@ variable "ecs_sg_name" {
 }
 
 variable "image_port" {
-    description = "Port"
+    description = "Image Port"
     type = number
     default = 3000
 }
 
 variable "alb_port" {
-    description = "Port"
+    description = "ALB Port"
     type = number
-    default = 8080
+    default = 80
 }
 
 variable "vpc_id" {
