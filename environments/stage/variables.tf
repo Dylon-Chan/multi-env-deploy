@@ -23,7 +23,7 @@ variable "image_port" {
 }
 
 variable "alb_port" {
-    description = "Port"
+    description = "ALB Port"
     type = number
     default = 8000
 }
