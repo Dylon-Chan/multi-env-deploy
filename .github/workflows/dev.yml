@@ -112,14 +112,6 @@ jobs:
           echo "access_url=$(terraform output -json all_access_urls | jq -r 'to_entries[0].value')" >> $GITHUB_OUTPUT
       - name: Echo Access URL
         run: echo "The Access URL is ${{ steps.tf-outputs.outputs.access_url }}"
-      - name: Save Github Action output to a file
-        run: |
-          echo "${{ steps.tf-outputs.outputs.access_url }}" > access_url.txt
-      - name: Upload Access URL
-        uses: actions/upload-artifact@v3
-        with:
-          name: access_url_artifact
-          path: access_url.txt
 
   # Define the "get-aws-info" job, which uses a reusable workflow defined in another file. 
   get-aws-info:
