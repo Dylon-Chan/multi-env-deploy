@@ -27,23 +27,10 @@ jobs:
   show-access-url:
     runs-on: ubuntu-latest
     needs: pre-deploy
-    outputs:
-      access_url: ${{ steps.get_access_url.outputs.access_url }}
-    steps:
-      - name: Show the access URL
-        id: get_access_url
-        run: |
-          echo "access_url=${{ github.event.inputs.access_url }}" >> $GITHUB_OUTPUT
-
-  test-access-url:
-    runs-on: ubuntu-latest
-    needs: show-access-url
     steps:
       - name: Show the access URL
         run: |
-          access_url=${{ needs.show-access-url.outputs.access_url }}
-          echo "access_url=${{ needs.show-access-url.outputs.access_url }}"
-          echo "$access_url"
+          echo "access_url=${{ github.event.inputs.access_url }}"
   
 # Add DAST scan
 
