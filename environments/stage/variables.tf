@@ -16,10 +16,16 @@ variable "ecs_sg_name" {
   default = "ws-app-ecs-sg-stage"
 }
 
-variable "port" {
+variable "image_port" {
     description = "Port"
     type = number
-    default = 3030
+    default = 3000
+}
+
+variable "alb_port" {
+    description = "Port"
+    type = number
+    default = 8000
 }
 
 variable "vpc_id" {
@@ -35,6 +41,7 @@ variable "subnets" {
 variable "image_name" {
   description = "ECR Repository Name"
   type = string
+  default = "255945442255.dkr.ecr.ap-southeast-1.amazonaws.com/ws-app"
 }
 
 variable "image_tag" {
@@ -59,4 +66,10 @@ variable "memory" {
   description = "Memory"
   type = number
   default = 1024
+}
+
+variable "lb_sg_name" {
+  description = "ECS Security Group Name"
+  type = string
+  default = "ws-app-lb-sg-stage"
 }
