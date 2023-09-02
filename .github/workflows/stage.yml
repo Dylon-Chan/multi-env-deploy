@@ -68,11 +68,11 @@ jobs:
           target_group_arn=${{ steps.terraform-ecs.outputs.target_group_arn }}
           while true; do
             health_status=$(aws elbv2 describe-target-health --target-group-arn $target_group_arn --query "TargetHealthDescriptions[0].TargetHealth.State" --output text)
-            if [[ "$HEALTH_STATUS" == "healthy" ]]; then
+            if [[ "$health_status" == "healthy" ]]; then
                     echo "Targets are healthy!"
                     break
                 else
-                    echo "Current status of target: $HEALTH_STATUS. Waiting..."
+                    echo "Current status of target: $health_status. Waiting..."
                     sleep 30  # Check every 30 seconds
                 fi
           done
