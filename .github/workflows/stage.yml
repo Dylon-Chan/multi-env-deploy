@@ -76,7 +76,7 @@ jobs:
           echo "access_url=$(terraform output -json | jq -r .alb_hostname.value)"
           echo "access_url=$(terraform output -json | jq -r .alb_hostname.value)" >> $GITHUB_OUTPUT
       - name: Echo Access URL
-        run: echo "The Access URL is ${{ steps.terraform-ecs.outputs.access_url }}:8000"
+        run: echo "The Access URL is http://${{ steps.terraform-ecs.outputs.access_url }}:8000"
 
 
 
