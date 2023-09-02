@@ -17,7 +17,7 @@ variable "ecs_sg_name" {
 }
 
 variable "image_port" {
-    description = "Port"
+    description = "Image Port"
     type = number
     default = 3000
 }
@@ -41,7 +41,7 @@ variable "subnets" {
 variable "image_name" {
   description = "ECR Repository Name"
   type = string
-  // default = "255945442255.dkr.ecr.ap-southeast-1.amazonaws.com/ws-app"
+  // default = "255945442255.dkr.ecr.ap-southeast-1.amazonaws.com/ws-app" # for local testing
 }
 
 variable "image_tag" {
