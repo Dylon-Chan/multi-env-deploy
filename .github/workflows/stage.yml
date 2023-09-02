@@ -71,7 +71,6 @@ jobs:
         working-directory: ./environments/${{ env.environment }}
         run: |
           terraform init
-          terraform plan
           terraform apply -auto-approve -var "image_name=${{ steps.terraform-ecr.outputs.ecr_url }}"
           echo "ecr_url=$(terraform output -json | jq -r .alb_hostname.value)"
           echo "ecr_url=$(terraform output -json | jq -r .alb_hostname.value)" >> $GITHUB_OUTPUT
