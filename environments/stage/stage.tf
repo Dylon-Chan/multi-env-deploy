@@ -49,7 +49,7 @@ resource "aws_ecs_service" "service" {
   task_definition = aws_ecs_task_definition.task.arn
   launch_type = "FARGATE"
   depends_on = [ aws_security_group.ecs_sg, aws_lb_listener.front_end ]
-  desired_count = 1
+  desired_count = 2
   
   network_configuration {
     subnets = var.subnets

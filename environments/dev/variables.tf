@@ -24,12 +24,13 @@ variable "image_port" {
 
 variable "vpc_id" {
   type = string
-  default = "vpc-038783054495c1d2f"
+  default = "vpc-01eb8331fac862b2e"
 }
 
 variable "subnets" {
   type = list(string)
-  default = ["subnet-0a66f860edb68d17a", "subnet-0cb72c22794da5e18"]  
+  default = ["subnet-0623d78431b777e3e" ] // use 1 subnet for dev
+  // default = ["subnet-0623d78431b777e3e", "subnet-02a6bf9a87a5dec14", "subnet-07d728c6db3bd830b" ]
 }
 
 variable "image_name" {

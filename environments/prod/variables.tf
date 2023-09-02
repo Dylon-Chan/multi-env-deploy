@@ -30,7 +30,7 @@ variable "alb_port" {
 
 variable "vpc_id" {
   type = string
-  default = "vpc-038783054495c1d2f" # change!
+  default = "vpc-038783054495c1d2f"
 }
 
 variable "subnets" {
