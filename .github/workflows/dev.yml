@@ -66,7 +66,6 @@ jobs:
     name: Deploy to AWS
     env:
       environment: ${{ github.ref_name }}
-      image_tag: latest
     steps:
       - name: Checkout repo code
         uses: actions/checkout@v3

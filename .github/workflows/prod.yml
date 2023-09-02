@@ -58,10 +58,9 @@ jobs:
         run: |
           terraform init
           terraform apply -auto-approve -var "image_name=${{ steps.terraform-ecr.outputs.ecr_url }}"
-          echo "access_url=$(terraform output -json | jq -r .alb_hostname.value)"
-          echo "access_url=$(terraform output -json | jq -r .alb_hostname.value)" >> $GITHUB_OUTPUT
           echo "target_group_arn=$(terraform output -json | jq -r .target_group_arn.value)"
           echo "target_group_arn=$(terraform output -json | jq -r .target_group_arn.value)" >> $GITHUB_OUTPUT
+          echo "route53_record_name=$(terraform output -json | jq -r .route53_record_name.value)" >> $GITHUB_OUTPUT
       - name: Check ALB Target Group Health Status
         run: |
           target_group_arn=${{ steps.terraform-ecs.outputs.target_group_arn }}
@@ -76,7 +75,7 @@ jobs:
                 fi
           done
       - name: Echo Access URL
-        run: echo "The Access URL is http://${{ steps.terraform-ecs.outputs.access_url }}"
+        run: echo "The Access URL is http://${{ steps.terraform-ecs.outputs.route53_record_name }}"
 
 
 
