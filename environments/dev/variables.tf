@@ -35,6 +35,7 @@ variable "subnets" {
 variable "image_name" {
   description = "ECR Repository Name"
   type = string
+  // default = "255945442255.dkr.ecr.ap-southeast-1.amazonaws.com/ws-app"
 }
 
 variable "image_tag" {
