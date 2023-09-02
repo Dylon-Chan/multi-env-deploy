@@ -129,3 +129,21 @@ resource "aws_lb_listener" "front_end" {
     target_group_arn = aws_lb_target_group.load_balancer_tg.id
   }
 }
+
+# Below for Route 53
+
+data "aws_route53_zone" "primary" {
+  name = var.domain_name
+}
+
+resource "aws_route53_record" "www" {
+  zone_id = data.aws_route53_zone.primary.zone_id
+  name = "www.${data.aws_route53_zone.primary.name}"
+  type = "A"
+
+  alias {
+    name = aws_lb.loadbalancer.dns_name
+    zone_id = aws_lb.loadbalancer.zone_id
+    evaluate_target_health = true
+  }
+}
