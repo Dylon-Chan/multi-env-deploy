@@ -73,3 +73,9 @@ variable "lb_sg_name" {
   type = string
   default = "ws-app-lb-sg-prod"
 }
+
+variable "domain_name" {
+  description = "Domain Name"
+  type = string
+  default = "securechat.club"
+}
