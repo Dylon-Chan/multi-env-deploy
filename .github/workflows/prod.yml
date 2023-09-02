@@ -60,6 +60,21 @@ jobs:
           terraform apply -auto-approve -var "image_name=${{ steps.terraform-ecr.outputs.ecr_url }}"
           echo "access_url=$(terraform output -json | jq -r .alb_hostname.value)"
           echo "access_url=$(terraform output -json | jq -r .alb_hostname.value)" >> $GITHUB_OUTPUT
+          echo "target_group_arn=$(terraform output -json | jq -r .target_group_arn.value)"
+          echo "target_group_arn=$(terraform output -json | jq -r .target_group_arn.value)" >> $GITHUB_OUTPUT
+      - name: Check ALB Target Group Health Status
+        run: |
+          target_group_arn=${{ steps.terraform-ecs.outputs.target_group_arn }}
+          while true; do
+            health_status=$(aws elbv2 describe-target-health --target-group-arn $target_group_arn --query "TargetHealthDescriptions[0].TargetHealth.State" --output text)
+            if [[ "$health_status" == "healthy" ]]; then
+                    echo "Targets are healthy!"
+                    break
+                else
+                    echo "Current status of target: $health_status. Waiting..."
+                    sleep 30  # Check every 30 seconds
+                fi
+          done
       - name: Echo Access URL
         run: echo "The Access URL is http://${{ steps.terraform-ecs.outputs.access_url }}"
 
