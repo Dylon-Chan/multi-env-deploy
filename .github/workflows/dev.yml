@@ -1,6 +1,6 @@
 
-name: CICD for Group 2 Chat Application
-run-name: ${{ github.actor }} is running CICD for Group 2 Chat Application
+name: CICD for Group 2 Chat Application - Development
+run-name: ${{ github.actor }} is running CICD for Group 2 Chat Application - Development
 
 
 on:
@@ -19,7 +19,7 @@ jobs:
   pre-deploy:
     runs-on: ubuntu-latest
     steps:
-      - run: echo "The job is automatically triggered by a ${{ github.event_name }} event."
+      - run: echo "The job is automatically triggered by a ${{ github.event_name }} event on ${{ github.ref_name }} branch."
 
   unit-testing:
     runs-on: ubuntu-latest
@@ -65,7 +65,7 @@ jobs:
     needs: [ unit-testing, sca-tool-scan, get-aws-info] # Update if other jobs are added
     name: Deploy to AWS
     env:
-      environment: ${{ needs.get-aws-info.outputs.environment }}
+      environment: ${{ github.ref_name }}
       image_tag: latest
     steps:
       - name: Checkout repo code
