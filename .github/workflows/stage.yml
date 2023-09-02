@@ -25,7 +25,7 @@ jobs:
     needs: [ get-aws-info]
     name: Deploy to Staging Environment
     env:
-      environment: ${{ needs.get-aws-info.outputs.environment }}
+      environment: ${{ github.ref_name }}
       port: 8000
     steps:
       - name: Checkout repo code

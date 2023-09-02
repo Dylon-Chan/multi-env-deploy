@@ -25,7 +25,7 @@ jobs:
     needs: [ get-aws-info]
     name: Deploy to Production
     env:
-      environment: ${{ needs.get-aws-info.outputs.environment }}
+      environment: ${{ github.ref_name }}
     steps:
       - name: Checkout repo code
         uses: actions/checkout@v3
