@@ -66,6 +66,7 @@ jobs:
     name: Deploy to AWS
     env:
       environment: ${{ needs.get-aws-info.outputs.environment }}
+      image_tag: latest
     steps:
       - name: Checkout repo code
         uses: actions/checkout@v3
@@ -94,8 +95,6 @@ jobs:
           echo "ecr_url=$(terraform output -json | jq -r .repository_url.value)" >> $GITHUB_OUTPUT
       - name: Push image to Amazon ECR
         id: push-image
-        env:
-          image_tag: latest
         run: |
           docker build -t ${{ steps.terraform-ecr.outputs.ecr_url }}:$image_tag .
           docker push ${{ steps.terraform-ecr.outputs.ecr_url }}:$image_tag
