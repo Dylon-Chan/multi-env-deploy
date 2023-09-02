@@ -102,6 +102,12 @@ resource "aws_lb_target_group" "load_balancer_tg" {
     healthy_threshold   = "3"
     unhealthy_threshold = "2"
   }
+
+    stickiness {
+    type = "lb_cookie"
+    cookie_duration = 86400 # Set the stickiness duration in seconds (e.g. 1 day)
+    enabled = true
+  }
 }
 
 resource "aws_lb" "loadbalancer" {
@@ -109,8 +115,8 @@ resource "aws_lb" "loadbalancer" {
   load_balancer_type = "application"
   security_groups    = [aws_security_group.loadbalancer_sg.id]
   subnets            = var.subnets
-
-  # enable_deletion_protection = true
+  enable_deletion_protection = false
+  idle_timeout = 300  # Set the timeout in seconds (e.g. 5 minutes)
 }
 
 resource "aws_lb_listener" "front_end" {
