@@ -22,6 +22,11 @@ resource "aws_ecs_cluster" "cluster" {
   name = var.ecs_name
 }
 
+data "aws_ecr_image" "app" {
+  repository_name = var.image_name
+  image_tag       = var.image_tag
+}
+
 resource "aws_ecs_task_definition" "task" {
   family = "${var.ecs_name}-task"
   network_mode = "awsvpc"
@@ -31,7 +36,7 @@ resource "aws_ecs_task_definition" "task" {
   execution_role_arn = var.role_to_assume
   container_definitions = jsonencode([{
     name: "${var.ecs_name}-td",
-    image: "${var.image_name}:${var.image_tag}",
+    image: "${var.image_name}:${var.image_tag}@${data.aws_ecr_image.app.image_digest}",
     cpu: var.cpu,
     portMappings: [
         {
@@ -44,8 +49,6 @@ resource "aws_ecs_task_definition" "task" {
 }])
 }
 
-resource "random_uuid" "redeploy_trigger" {}
-
 resource "aws_ecs_service" "service" {
   name = "${var.ecs_name}-service"
   cluster = aws_ecs_cluster.cluster.id
@@ -53,11 +56,6 @@ resource "aws_ecs_service" "service" {
   launch_type = "FARGATE"
   depends_on = [ aws_security_group.ecs_sg, aws_ecs_task_definition.task ]
   desired_count = 1
-  force_new_deployment = true
-
-  triggers = {
-    redeploy_trigger = sha1("${timestamp()}-${random_uuid.redeploy_trigger.result}")
-  }
   
   network_configuration {
     subnets = var.subnets
