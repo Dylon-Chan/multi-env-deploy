@@ -22,11 +22,6 @@ resource "aws_ecs_cluster" "cluster" {
   name = var.ecs_name
 }
 
-data "aws_ecr_image" "app" {
-  repository_name = var.image_name
-  image_tag       = var.image_tag
-}
-
 resource "aws_ecs_task_definition" "task" {
   family = "${var.ecs_name}-task"
   network_mode = "awsvpc"
