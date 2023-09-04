@@ -330,10 +330,10 @@ module.exports = {
   COLORS
 };
 
-  // If the message is from the sender, align it to the right
+/*   // If the message is from the sender, align it to the right
   if(data.username === username) {
     $messageDiv.addClass('ownerMessage');
-  }
+  } */
 
 /* $('.dropbtn').on('click', () => {
   $('#userList').toggle();
