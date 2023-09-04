@@ -2,20 +2,27 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Group 2 Chatroom</title>
-  <link rel="stylesheet" href="style.css">
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
-  <link rel="manifest" href="/site.webmanifest">
-</head>
+  <!-- This tag ensures that the page is rendered properly on different browsers -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <!-- This tag sets the viewport to the device's width and scales the content to 1.0 -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chat Secure</title>
+  <link href="style.css" rel="stylesheet"/>
+  <link href="/images/apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180"/>
+  <link href="/images/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png"/>
+  <link href="/images/favicon-16x16.png" rel="icon" sizes="16x16" type="image/png"/>
+  <link href="/site.webmanifest" rel="manifest"/>
 <body>
   <ul class="pages">
     <li class="chat page">
+<!--       <div class="dropdown">
+        <button class="dropbtn">👤 Users</button>
+        <div class="dropdown-content" id="userList"></div> -->
+      </div>
       <div class="chatArea">
         <ul class="messages"></ul>
       </div>
-      <input class="inputMessage" placeholder="Type here..."/>
+      <input class="inputMessage" placeholder="Type here..."/><button class="sendButton">➤</button>
     </li>
     <li class="login page">
       <div class="form">
@@ -28,7 +35,7 @@
   <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
   <script src="/socket.io/socket.io.js"></script>
   <script src="/main.js"></script>
-
+    
   <script>
     document.addEventListener('DOMContentLoaded', function() {
       initializeApp();
