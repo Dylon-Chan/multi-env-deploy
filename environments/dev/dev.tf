@@ -56,7 +56,7 @@ resource "aws_ecs_service" "service" {
   force_new_deployment = true
 
   triggers = {
-    redeployment = sha1("${timestamp()}-${random_uuid.redeploy_trigger.result}")
+    redeployment = timestamp()
   }
   
   network_configuration {
