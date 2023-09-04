@@ -49,6 +49,8 @@ resource "aws_ecs_task_definition" "task" {
 }])
 }
 
+resource "random_uuid" "redeploy_trigger" {}
+
 resource "aws_ecs_service" "service" {
   name = "${var.ecs_name}-service"
   cluster = aws_ecs_cluster.cluster.id
@@ -56,6 +58,11 @@ resource "aws_ecs_service" "service" {
   launch_type = "FARGATE"
   depends_on = [ aws_security_group.ecs_sg, aws_ecs_task_definition.task ]
   desired_count = 1
+  force_new_deployment = true
+
+  triggers = {
+    redeployment = sha1("${timestamp()}-${random_uuid.redeploy_trigger.result}")
+  }
   
   network_configuration {
     subnets = var.subnets
