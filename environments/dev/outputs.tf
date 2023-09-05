@@ -22,5 +22,7 @@ output "all_public_ip" {
 }
 
 output "all_access_urls" {
-  value = "http://${v.association[0].public_ip}:${var.image_port}"
+  value = {
+    for k, v in data.aws_network_interface.all : k => "http://${v.association[0].public_ip}:${var.image_port}"
+  }
 }
