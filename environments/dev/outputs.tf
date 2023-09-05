@@ -1,7 +1,7 @@
 #Output the IP address of the ECS cluster service
 
 data "aws_network_interfaces" "all" {
-  tag = {
+  tags = {
     "aws:ecs:clusterName" = var.ecs_name
   }
 }
