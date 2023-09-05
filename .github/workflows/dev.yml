@@ -73,7 +73,7 @@ jobs:
         id: get-image-digest
         run: |
           terraform output
-          echo "image_digest=$(terraform output -json | jq -r .image_digest.value | cut -d: -f2)" >> $GITHUB_OUTPUT
+          echo "image_digest=$(terraform output -json | jq -r .image_digest.value)" >> $GITHUB_OUTPUT
       - name: Create AWS ECS cluster, task definition and service using Terraform
         working-directory: ./environments/${{ env.environment }}
         run: |
