@@ -58,9 +58,5 @@ resource "aws_ecs_service" "service" {
     security_groups = [aws_security_group.ecs_sg.id]
     assign_public_ip = true
   }
-
-  tags = {
-    Name = "${var.ecs_name}-service"
-  }
 }
 
