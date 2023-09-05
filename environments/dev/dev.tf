@@ -20,10 +20,6 @@ resource "aws_security_group" "ecs_sg" {
 
 resource "aws_ecs_cluster" "cluster" {
   name = var.ecs_name
-
-  tags = {
-    Name = var.ecs_name
-  }
 }
 
 resource "aws_ecs_task_definition" "task" {
@@ -62,11 +58,9 @@ resource "aws_ecs_service" "service" {
     security_groups = [aws_security_group.ecs_sg.id]
     assign_public_ip = true
   }
-}
 
-resource "time_sleep" "tens" {
-  depends_on = [aws_ecs_service.service]
-
-  create_duration = "10s"
+  tags = {
+    Name = "${var.ecs_name}-service"
+  }
 }
 
