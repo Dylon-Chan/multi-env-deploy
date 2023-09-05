@@ -82,6 +82,7 @@ jobs:
             exit 1
           fi
       - name: Redeploy ECS Service if No Changes
+        working-directory: ./environments/${{ env.environment }}
         if: env.TERRAFORM_CHANGE == 'false'
         run: |
           echo "No changes detected. Redeploying ECS Service..."
