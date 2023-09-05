@@ -1,8 +1,9 @@
 #Output the IP address of the ECS cluster service
 
 data "aws_network_interfaces" "all" {
-  tags = {
-    "aws:ecs:clusterName" = "${var.ecs_name}"
+  filter {
+    name = "group-id"
+    values = [aws_security_group.ecs_sg.id]
   }
 }
 
