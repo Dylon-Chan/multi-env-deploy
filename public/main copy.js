@@ -93,28 +93,16 @@ function initializeApp() {
       $typingMessages.remove();
     }
 
-/*     // Create a new list item for the message and set its properties
     const $usernameDiv = $('<span class="username"/>')
       .text(data.username)
       .css('color', getUsernameColor(data.username));
     const $messageBodyDiv = $('<span class="messageBody">')
-      .text(data.message); */
-
-    // Only add the username if the message is not from the current user
-    const $messageBodyDiv = $('<span class="messageBody">').text(data.message);
-    let $usernameDiv;
-    if (data.username !== username) {
-        $usernameDiv = $('<span class="username"/>')
-            .text(data.username)
-            .css('color', getUsernameColor(data.username));
-    }
+      .text(data.message);
 
     const typingClass = data.typing ? 'typing' : '';
-    const alignmentClass = data.username === username ? 'right' : 'left';  // Check if the sender is the current user
     const $messageDiv = $('<li class="message"/>')
       .data('username', data.username)
       .addClass(typingClass)
-      .addClass(alignmentClass)  // Add the alignment class
       .append($usernameDiv, $messageBodyDiv);
 
     addMessageElement($messageDiv, options);
@@ -261,7 +249,7 @@ function initializeApp() {
     addChatMessage(data);
   });
 
-  // Whenever the server emits 'user joined', log it in the chat body
+/*   // Whenever the server emits 'user joined', log it in the chat body
   socket.on('user joined', (data) => {
     log(`${data.username} joined`);
     addParticipantsMessage(data);
@@ -272,9 +260,8 @@ function initializeApp() {
     log(`${data.username} left`);
     addParticipantsMessage(data);
     removeChatTyping(data);
-  });
-
-/*   // Whenever the server emits 'user joined', log it in the chat body and update user list
+  }); */
+// Whenever the server emits 'user joined', log it in the chat body and update user list
 socket.on('user joined', (data) => {
   log(data.username + ' joined');
   addParticipantsMessage(data);
@@ -295,7 +282,7 @@ function updateDropdownUserList(data) {
   data.usernames.forEach((username) => {
     $userListDropdown.append($('<a>').text(username));
   });
-} */
+}
 
   // Whenever the server emits 'typing', show the typing message
   socket.on('typing', (data) => {
@@ -330,12 +317,12 @@ module.exports = {
   COLORS
 };
 
-/*   // If the message is from the sender, align it to the right
+  // If the message is from the sender, align it to the right
   if(data.username === username) {
     $messageDiv.addClass('ownerMessage');
-  } */
+  }
 
-/* $('.dropbtn').on('click', () => {
+$('.dropbtn').on('click', () => {
   $('#userList').toggle();
 });
 
@@ -344,4 +331,4 @@ $(document).ready(() => {
     $('#userList').toggle();
   });
 });
- */
+
