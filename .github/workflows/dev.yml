@@ -78,7 +78,7 @@ jobs:
         working-directory: ./environments/${{ env.environment }}
         run: |
           terraform init
-          terraform apply -auto-approve -var "image_name=${{ steps.terraform-ecr.outputs.ecr_url }}" -var "${{ steps.get-image-digest.outputs.image_digest }}" -target="aws_ecs_cluster.cluster" -target="aws_ecs_task_definition.task" -target="aws_security_group.ecs_sg" -target="aws_ecs_service.service"
+          terraform apply -auto-approve -var "image_name=${{ steps.terraform-ecr.outputs.ecr_url }}" -var "image_digest=${{ steps.get-image-digest.outputs.image_digest }}" -target="aws_ecs_cluster.cluster" -target="aws_ecs_task_definition.task" -target="aws_security_group.ecs_sg" -target="aws_ecs_service.service"
       - name: Set up Terraform outputs # to get the access url on Github Actions
         id: tf-outputs
         working-directory: ./environments/${{ env.environment }}
