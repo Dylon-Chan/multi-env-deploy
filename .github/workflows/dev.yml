@@ -70,6 +70,7 @@ jobs:
           docker push ${{ steps.terraform-ecr.outputs.ecr_url }}:$image_tag
       - name: Retrieve ECR Image Digest
         id: get-image-digest
+        working-directory: ./modules/ecr
         run: |
           terraform apply -auto-approve -refresh-only
           echo "image_digest=$(terraform output -json | jq -r .image_digest.value)" >> $GITHUB_OUTPUT
