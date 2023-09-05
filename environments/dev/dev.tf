@@ -60,3 +60,9 @@ resource "aws_ecs_service" "service" {
   }
 }
 
+resource "time_sleep" "tens" {
+  depends_on = [aws_ecs_service.service]
+
+  create_duration = "10s"
+}
+
