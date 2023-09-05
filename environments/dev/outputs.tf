@@ -12,6 +12,10 @@ data "aws_network_interface" "all" {
     id = each.key
 }
 
+output "aws_network_interface" {
+  value = data.aws_network_interface.all
+}
+
 output "all_access_urls" {
   value = {
     for k, v in data.aws_network_interface.all : k => "http://${v.association[0].public_ip}:${var.image_port}"
