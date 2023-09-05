@@ -52,6 +52,7 @@ resource "aws_ecs_service" "service" {
   launch_type = "FARGATE"
   depends_on = [ aws_security_group.ecs_sg, aws_ecs_task_definition.task ]
   desired_count = 1
+  enable_ecs_managed_tags = true
 
   network_configuration {
     subnets = var.subnets
@@ -59,6 +60,6 @@ resource "aws_ecs_service" "service" {
     assign_public_ip = true
   }
 
-  enable_ecs_managed_tags = true
+  
 }
 

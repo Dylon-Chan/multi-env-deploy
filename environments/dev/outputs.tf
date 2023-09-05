@@ -2,7 +2,7 @@
 
 data "aws_network_interfaces" "all" {
   tags = {
-    "aws:ecs:serviceName" = "${var.ecs_name}-service"
+    "aws:ecs:clusterName" = "${var.ecs_name}"
   }
 }
 
