@@ -85,6 +85,7 @@ jobs:
         if: env.TERRAFORM_CHANGE == 'false'
         run: |
           echo "No changes detected. Redeploying ECS Service..."
+          terraform apply -auto-approve -replace="aws_ecs_service.service" -var "image_name=${{ steps.terraform-ecr.outputs.ecr_url }}"
       - name: Set up Terraform outputs # to get the access url on Github Actions
         id: tf-outputs
         working-directory: ./environments/${{ env.environment }}
