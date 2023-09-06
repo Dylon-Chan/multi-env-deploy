@@ -50,11 +50,6 @@ variable "image_tag" {
   default = "latest"
 }
 
-variable "image_digest" {
-  description = "ECR Repository Digest"
-  type = string
-}
-
 variable "ecs_name" {
   description = "ECS Name"
   type = string
