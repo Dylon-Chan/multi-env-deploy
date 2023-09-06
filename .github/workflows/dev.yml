@@ -79,7 +79,7 @@ jobs:
         id: tf-outputs
         working-directory: ./environments/${{ env.environment }}
         run: |
-          terraform terraform apply -refresh-only -auto-approve -var "image_name=${{ steps.terraform-ecr.outputs.ecr_url }}"
+          terraform apply -refresh-only -auto-approve -var "image_name=${{ steps.terraform-ecr.outputs.ecr_url }}"
           echo "access_url=$(terraform output -json all_access_urls | jq -r 'to_entries[0].value')" >> $GITHUB_OUTPUT
       - name: Echo Access URL
         run: echo "The Access URL is ${{ steps.tf-outputs.outputs.access_url }}"
