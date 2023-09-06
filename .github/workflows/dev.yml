@@ -69,12 +69,71 @@ jobs:
           docker build -t ${{ steps.terraform-ecr.outputs.ecr_url }}:$image_tag .
           docker push ${{ steps.terraform-ecr.outputs.ecr_url }}:$image_tag
       - name: Create AWS ECS cluster, task definition and service using Terraform # Create AWS ECS cluster, task definition and service using Terraform
+        id: terraform-ecs
         working-directory: ./environments/${{ env.environment }}
         run: |
           terraform init
           terraform apply -auto-approve -var "image_name=${{ steps.terraform-ecr.outputs.ecr_url }}" \
           -target="aws_ecs_cluster.cluster" -target="aws_ecs_task_definition.task" -target="aws_security_group.ecs_sg" -target="aws_ecs_service.service"
           terraform taint aws_ecs_service.service
+          echo "ecs_name=$(terraform output -json ecs_name | jq -r .ecs_name.value)" >> $GITHUB_OUTPUT
+      - name: Check if ECS task is running
+        run: |
+          # Define your ECS cluster and service names
+          CLUSTER_NAME=${{ steps.terraform-ecs.outputs.ecs_name}}
+          SERVICE_NAME="${{ steps.terraform-ecs.outputs.ecs_name}}-service"
+        
+          # Define timeout and interval for checking task status
+          TIMEOUT=600 # Wait for 10 minutes max
+          INTERVAL=30 # Check every 30 seconds
+        
+          # Capture the start time for timeout tracking
+          start_time=$(date +%s)
+        
+          # Begin loop to check task status
+          while true; do
+              # Calculate elapsed time
+              current_time=$(date +%s)
+              elapsed_time=$((current_time - start_time))
+                       # Fetch the task ARNs associated with the service
+              task_arns=$(aws ecs list-tasks --cluster $CLUSTER_NAME --service-name $SERVICE_NAME --query "taskArns" --output text)
+                       # If no tasks are found, wait for the interval duration and then check again
+              if [ -z "$task_arns" ]; then
+                  echo "No tasks found. Waiting..."
+                  sleep $INTERVAL
+                  continue
+              fi
+        
+              # Fetch the last status of the tasks
+              statuses=$(aws ecs describe-tasks --cluster $CLUSTER_NAME --tasks $task_arns --query "tasks[*].lastStatus" --output text)
+        
+              # Assume all tasks are running initially
+              all_running=true
+        
+              # Loop through each status and check if it's "RUNNING"
+              for status in $statuses; do
+                  if [ "$status" != "RUNNING" ]; then
+                      all_running=false
+                      break
+                  fi
+              done
+        
+              # If all tasks are running, break out of the loop
+              if $all_running; then
+                  echo "All tasks are running."
+                  break
+              fi
+        
+              # If timeout is reached before all tasks are running, exit with an error
+              if [[ $elapsed_time -ge $TIMEOUT ]]; then
+                  echo "Timeout reached before all tasks reached RUNNING state."
+                  exit 1
+              fi
+        
+              # Wait for the specified interval before checking again
+              echo "Waiting for tasks to reach RUNNING state..."
+              sleep $INTERVAL
+          done
       - name: Set up Terraform outputs # Set up Terraform outputs to get the access url
         id: tf-outputs
         working-directory: ./environments/${{ env.environment }}
