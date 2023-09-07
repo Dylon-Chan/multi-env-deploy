@@ -73,7 +73,7 @@ jobs:
         working-directory: ./environments/${{ env.environment }}
         run: |
           terraform init
-          terraform plan
+          terraform plan -var "image_name=${{ steps.terraform-ecr.outputs.ecr_url }}"
           terraform apply -auto-approve -var "image_name=${{ steps.terraform-ecr.outputs.ecr_url }}"
           terraform taint aws_ecs_service.service
           echo "ecs_name=$(terraform output -json | jq -r .ecs_name.value)" >> $GITHUB_OUTPUT
